@@ -1,19 +1,26 @@
 import { NavLink } from "react-router-dom";
+import { useSettings } from "../contexts/SettingsContext";
 
 export default function Header() {
+  const { settings } = useSettings();
+
   return (
     <header>
       <nav className="navbar navbar-expand-md navbar-light bg-light shadow-sm fixed-top">
         <div className="container">
-          <NavLink
-            className="navbar-brand d-flex align-items-center"
-            to="/animals"
-          >
-            <img
-              src="/logo-zoodex.png"
-              alt="ZooDex"
-              style={{ height: "80px", marginTop: "-20px" }}
-            />
+          <NavLink className="navbar-brand d-flex align-items-center" to="/">
+            {settings ? (
+              <img
+                src={settings.navbar_logo}
+                alt={settings.app_name}
+                style={{ height: "80px", marginTop: "-20px" }}
+              />
+            ) : (
+              <div
+                className="spinner-border spinner-border-sm"
+                role="status"
+              ></div>
+            )}
           </NavLink>
 
           <button
@@ -29,7 +36,7 @@ export default function Header() {
           </button>
 
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <ul className="navbar-nav me-auto">
+            <ul className="navbar-nav ms-auto">
               <li className="nav-item">
                 <NavLink className="nav-link" to="/">
                   Home

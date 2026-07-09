@@ -7,9 +7,12 @@ import "bootstrap/dist/js/bootstrap.min.js";
 import "./assets/css/index.css";
 
 import App from "./App.jsx";
+import { SettingsProvider } from "./contexts/SettingsContext.jsx";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
-    <App />
+    <SettingsProvider>
+      <App />
+    </SettingsProvider>
   </StrictMode>,
 );
