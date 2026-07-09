@@ -7,7 +7,12 @@ const apiUrl = import.meta.env.VITE_API_URL; //creazione oggetto URL
 /* const indexApiUrl = apiUrl + "/animals"; */
 
 export default function HomePage() {
-  return <h1>HOMEPAGE</h1>;
+  return (
+    <div className="container py-4">
+      <h1>HOMEPAGE</h1>
+    </div>
+  );
+
   /* const [animals, setAnimals] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
