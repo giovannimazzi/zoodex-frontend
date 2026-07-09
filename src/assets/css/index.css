@@ -1,0 +1,11 @@
+/* .debug,
+.debug * {
+  border: 1px dashed red;
+  padding: 5px;
+  margin: 5px;
+} */
+
+body {
+  font-family: "Ubuntu", sans-serif;
+  background-color: #f8f9fa;
+}
