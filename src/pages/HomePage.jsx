@@ -1,65 +1,51 @@
-import axios from "axios";
-import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-
-const apiUrl = import.meta.env.VITE_API_URL; //creazione oggetto URL
-
-/* const indexApiUrl = apiUrl + "/animals"; */
+import { FcBinoculars } from "react-icons/fc";
+import { useSettings } from "../contexts/SettingsContext";
 
 export default function HomePage() {
+  const { settings } = useSettings();
+
+  if (!settings) {
+    return <div className="container py-4">Loading...</div>;
+  }
+
   return (
-    <div className="container py-4">
-      <h1>HOMEPAGE</h1>
+    <div className="container py-4 text-center">
+      <h1 className="visually-hidden">{settings.app_name}</h1>
+
+      <img
+        src={settings.hero_logo}
+        alt={settings.app_name}
+        className="img-fluid mb-2"
+      />
+
+      <h2 className="fw-bold mb-0 text-danger">Know Them All</h2>
+
+      <p className="h2 fw-bold mb-3 text-success">Conoscili Tutti</p>
+
+      <p className="lead fw-medium mx-auto mb-4 w-75">
+        <strong>ZooDex</strong> è un archivio digitale dedicato alla scoperta di
+        animali reali reinterpretati in chiave <strong>fantasy</strong>.
+        <br />
+        Attraverso schede dettagliate, immagini, habitat, abilità e altre
+        caratteristiche zoologiche, vuole trasformare la
+        <strong> curiosità</strong> in <strong>conoscenza</strong>, avvicinando
+        bambini e ragazzi al mondo della natura con lo stesso spirito di
+        <strong> esplorazione</strong> e <strong>meraviglia</strong> che ha reso
+        celebre il <strong>Pokédex</strong> dei Pokémon.
+      </p>
+
+      <p className="mb-0 text-muted">Archivio composto da</p>
+
+      <h2 className="display-5 fw-bold">{settings.animals_count}</h2>
+
+      <p className="mb-4 text-muted">animali catalogati</p>
+
+      <Link className="btn btn-warning btn-lg" to="/animals">
+        <FcBinoculars className="me-2" />
+        OSSERVA GLI ANIMALI
+        <FcBinoculars className="ms-2" />
+      </Link>
     </div>
   );
-
-  /* const [animals, setAnimals] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    //chiamata api all'apertura della pagina
-    setIsLoading(true);
-    axios
-      .get(indexApiUrl)
-      .then((res) => setAnimals(res.data.data))
-      .catch((e) => alert("ERRORE: " + e.message))
-      .finally(() => {
-        console.log(`Chiamata finita`);
-        setIsLoading(false);
-      });
-  }, []);
-
-  return (
-    <div className="px-3">
-      <h1>Animals List</h1>
-
-      {isLoading && (
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      )}
-
-      <div className="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4">
-        {animals.map((animal) => (
-          <div className="col mb-4" key={animal.id}>
-            <div
-              className="card h-100 text-center"
-              style={{ maxWidth: "25rem" }}
-            >
-              <h5 className="card-header bg-primary">{animal.name}</h5>
-
-              <div className="card-body">
-                <Link
-                  to={`/animals/${animal.slug}`}
-                  className="btn btn-warning"
-                >
-                  Details
-                </Link>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  ); */
 }
