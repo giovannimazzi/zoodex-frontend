@@ -3,10 +3,28 @@ import { FcBinoculars } from "react-icons/fc";
 import { useSettings } from "../contexts/SettingsContext";
 
 export default function HomePage() {
-  const { settings } = useSettings();
+  const { settings, settingsError } = useSettings();
+
+  if (settingsError) {
+    return (
+      <div className="container py-4">
+        <div className="alert alert-danger text-center" role="alert">
+          {settingsError}
+        </div>
+      </div>
+    );
+  }
 
   if (!settings) {
-    return <div className="container py-4">Loading...</div>;
+    return (
+      <div className="container py-5 text-center">
+        <div className="spinner-border text-warning" role="status">
+          <span className="visually-hidden">Caricamento ZooDex...</span>
+        </div>
+
+        <p className="text-muted mt-3 mb-0">Caricamento ZooDex...</p>
+      </div>
+    );
   }
 
   return (
