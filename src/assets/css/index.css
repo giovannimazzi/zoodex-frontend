@@ -5,13 +5,291 @@
   margin: 5px;
 } */
 
+/* GENERAL */
+
 body {
   font-family: "Ubuntu", sans-serif;
   padding-top: 76px;
 }
 
+/* ANIMAL CARDS */
+
+.animal-card {
+  max-width: 320px;
+  cursor: pointer;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.animal-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.15) !important;
+}
+
+.animal-card-heading {
+  min-height: 110px;
+}
+
+.animal-card-image {
+  position: relative;
+  width: 100%;
+  height: 300px;
+  overflow: hidden;
+}
+
+.animal-card-image-content {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  opacity: 0;
+  transition: opacity 3s ease;
+}
+
+.animal-card-image-content.active {
+  opacity: 1;
+}
+
+.animal-card-details {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 1s ease,
+    opacity 1s ease;
+}
+
+.animal-card-details-open {
+  max-height: 1000px;
+  opacity: 1;
+}
+
+/* CONTINENT INDICATORS */
+
+.continent-dot {
+  display: inline-block;
+  width: 20px;
+  height: 10px;
+  flex-shrink: 0;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 1000px;
+}
+
+/* FLOATING ANIMAL CONTROLS */
+
+.animals-controls {
+  z-index: 1000;
+}
+
+.animals-controls .btn {
+  width: 46px;
+  height: 46px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+/* STICKY SEARCH AND FILTER TOOLBAR */
+
+.animals-toolbar {
+  position: sticky;
+  top: 76px;
+  z-index: 1020;
+}
+
+.animals-toolbar-collapsed {
+  padding: 0.25rem;
+}
+
+.animals-toolbar-toggle {
+  width: 42px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.animals-toolbar-content {
+  max-height: 0;
+  overflow: hidden;
+  opacity: 0;
+  transition:
+    max-height 0.5s ease,
+    opacity 0.3s ease;
+}
+
+.animals-toolbar-content-open {
+  max-height: 600px;
+  overflow: visible;
+  opacity: 1;
+}
+
+.animals-toolbar-content-inner {
+  overflow: visible;
+}
+
+/* BASIC FILTER DROPDOWNS */
+
+.basic-filter-menu {
+  min-width: 230px;
+  max-height: 360px;
+  overflow-y: auto;
+  z-index: 1050;
+}
+
+.basic-filter-icon {
+  width: 30px;
+  height: 30px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+/* ADVANCED FILTER OFFCANVAS */
+
+.zoodex-filters {
+  top: 76px;
+  width: 380px;
+  height: calc(100vh - 76px);
+}
+
+.filter-option {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem;
+  border: 1px solid #dee2e6;
+  border-radius: 0.375rem;
+  cursor: pointer;
+}
+
+.filter-option:hover {
+  background-color: #f8f9fa;
+}
+
+.filter-option-active {
+  border-color: #ffc107;
+  background-color: rgba(255, 193, 7, 0.12);
+}
+
+.filter-icon {
+  width: 36px;
+  height: 36px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.filter-icon-lg {
+  width: 48px;
+  height: 48px;
+}
+
+.filter-mode {
+  width: 130px;
+}
+
+/* ANIMAL DETAIL IMAGES */
+
+.animal-detail-main-image {
+  height: 380px;
+  overflow: hidden;
+}
+
+.animal-detail-fantasy-image {
+  width: 100%;
+  height: 100%;
+  padding: 0.5rem;
+  object-fit: contain;
+}
+
+.animal-detail-real-image {
+  width: auto;
+  height: auto;
+  max-width: 82%;
+  max-height: 310px;
+  object-fit: contain;
+}
+
+/* ANIMAL DETAIL TAXONOMY IMAGES */
+
+.animal-detail-taxonomy-image {
+  width: 85px;
+  height: 85px;
+  padding: 0.25rem;
+  object-fit: contain;
+}
+
+.animal-detail-globe-icon {
+  width: 100%;
+  max-width: 220px;
+  max-height: 220px;
+  object-fit: contain;
+}
+
+.animal-detail-habitat-image {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+}
+
+.animal-detail-ability-image {
+  width: 120px;
+  height: 120px;
+  object-fit: contain;
+}
+
+/* ANIMAL DETAIL CARD ANIMATION */
+
+.animal-detail-info-card {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.animal-detail-info-card:hover {
+  position: relative;
+  z-index: 2;
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.15);
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 767px) {
+  .animal-detail-main-image {
+    height: 300px;
+  }
+
+  .animal-detail-real-image {
+    max-width: 90%;
+    max-height: 250px;
+  }
+
+  .animal-detail-habitat-image {
+    width: 180px;
+    height: 180px;
+  }
+}
+
+@media (max-width: 400px) {
+  .zoodex-filters {
+    width: 100%;
+  }
+}
+
 @media (max-width: 279px) {
   body {
     padding-top: 100px;
+  }
+
+  .animals-toolbar {
+    top: 100px;
+  }
+
+  .zoodex-filters {
+    top: 100px;
+    height: calc(100vh - 100px);
   }
 }

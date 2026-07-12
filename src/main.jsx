@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 // Bootstrap
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.min.js";
+import "bootstrap/dist/js/bootstrap.bundle.min.js";
 // Foglio di stile custom
 import "./assets/css/index.css";
 
