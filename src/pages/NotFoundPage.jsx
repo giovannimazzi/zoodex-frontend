@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 export default function NotFound() {
   return (
-    <main className="container">
+    <main className="container py-4">
       <section
         className="d-flex flex-column align-items-center justify-content-center text-center py-5"
         style={{ minHeight: "70vh" }}
