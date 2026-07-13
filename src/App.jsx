@@ -14,10 +14,7 @@ export default function App() {
         <Route Component={DefaultLayout}>
           {/*Rotta usata per imporre un layout a tutte le rotte ivi contenute*/}
           <Route index Component={HomePage} />
-          <Route
-            path="/animals" /* rotta parametrica */
-            element={<AnimalsPage />}
-          />
+          <Route path="/animals" element={<AnimalsPage />} />
           <Route
             path="/animals/:slug" /* rotta parametrica */
             element={<AnimalDetailPage />}
