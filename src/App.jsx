@@ -19,7 +19,7 @@ export default function App() {
             path="/animals/:slug" /* rotta parametrica */
             element={<AnimalDetailPage />}
           />
-          <Route path="*" Component={NotFoundPage} />{" "}
+          <Route path="*" Component={NotFoundPage} />
           {/*rotta a cui si giunge se non si intercetta nessuno dei casi precedenti: pagina 404-not found*/}
         </Route>
       </Routes>
