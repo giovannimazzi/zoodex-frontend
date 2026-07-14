@@ -9,13 +9,15 @@ import {
   FaChevronRight,
 } from "react-icons/fa";
 
+import ImageWithFallback from "../components/ImageWithFallback";
 import { useSettings } from "../contexts/SettingsContext";
 
 const apiUrl = import.meta.env.VITE_API_URL;
 
 export default function AnimalDetailPage() {
   const { slug } = useParams();
-  const { settings } = useSettings();
+
+  const { settings, fallbackColor } = useSettings();
 
   const [animal, setAnimal] = useState(null);
 
@@ -59,10 +61,7 @@ export default function AnimalDetailPage() {
         setLoading(false);
       });
 
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
+    scrollToTop();
   }, [slug]);
 
   function scrollToTop() {
@@ -187,10 +186,11 @@ export default function AnimalDetailPage() {
 
             <div className="card-body p-2">
               <div className="animal-detail-main-image bg-light d-flex align-items-center justify-content-center">
-                <img
+                <ImageWithFallback
                   src={animal.card_image}
                   alt={`${animal.name} in versione fantasy`}
                   className="animal-detail-fantasy-image"
+                  title={`${animal.name} in versione fantasy`}
                 />
               </div>
             </div>
@@ -203,10 +203,11 @@ export default function AnimalDetailPage() {
 
             <div className="card-body p-2">
               <div className="animal-detail-main-image bg-light d-flex align-items-center justify-content-center">
-                <img
+                <ImageWithFallback
                   src={animal.real_image}
                   alt={`${animal.name} nella realtà`}
                   className="animal-detail-real-image"
+                  title={`${animal.name} nella realtà`}
                 />
               </div>
             </div>
@@ -216,15 +217,15 @@ export default function AnimalDetailPage() {
 
       {/* Descrizione */}
 
-      <div className="card shadow-sm mb-3 animal-detail-info-card">
-        <div className="card-header fw-bold">Descrizione</div>
+      {animal.description && (
+        <div className="card shadow-sm mb-3 animal-detail-info-card">
+          <div className="card-header fw-bold">Descrizione</div>
 
-        <div className="card-body">
-          <p className="lead mb-0">
-            {animal.description || "Descrizione non disponibile."}
-          </p>
+          <div className="card-body">
+            <p className="lead mb-0">{animal.description}</p>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Dati fisici */}
 
@@ -288,87 +289,87 @@ export default function AnimalDetailPage() {
 
       <div className="row g-3 mb-3 justify-content-center">
         <div className="col-12 col-md-4">
-          <div
-            className="card h-100 shadow-sm animal-detail-info-card"
-            style={{
-              borderColor: animal.animal_class.color,
-              borderWidth: "3px",
-            }}
-          >
+          <div className="card h-100 shadow-sm animal-detail-info-card">
             <div className="card-header fw-bold">Classe</div>
 
             <div className="card-body text-center p-3">
-              <img
-                src={animal.animal_class.image}
-                alt={animal.animal_class.name}
-                className="animal-detail-taxonomy-image rounded-circle mb-2"
-                style={{
-                  backgroundColor: animal.animal_class.color,
-                }}
-              />
+              {animal.animal_class && (
+                <>
+                  <ImageWithFallback
+                    src={animal.animal_class.image}
+                    alt={animal.animal_class.name}
+                    title={animal.animal_class.name}
+                    className="animal-detail-taxonomy-image rounded-circle d-block mx-auto mb-2"
+                    style={{
+                      backgroundColor:
+                        animal.animal_class.color || fallbackColor,
+                    }}
+                  />
 
-              <h2 className="h5">{animal.animal_class.name}</h2>
+                  <h2 className="h5">{animal.animal_class.name}</h2>
 
-              <p className="text-muted mb-0">
-                {animal.animal_class.description ||
-                  "Descrizione non disponibile."}
-              </p>
+                  {animal.animal_class.description && (
+                    <p className="text-muted mb-0">
+                      {animal.animal_class.description}
+                    </p>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>
 
         <div className="col-12 col-md-4">
-          <div
-            className="card h-100 shadow-sm animal-detail-info-card"
-            style={{
-              borderColor: animal.diet.color,
-              borderWidth: "3px",
-            }}
-          >
+          <div className="card h-100 shadow-sm animal-detail-info-card">
             <div className="card-header fw-bold">Dieta</div>
 
             <div className="card-body text-center p-3">
-              <img
-                src={animal.diet.image}
-                alt={animal.diet.name}
-                className="animal-detail-taxonomy-image mb-2"
-                style={{
-                  backgroundColor: animal.diet.color,
-                }}
-              />
+              {animal.diet && (
+                <>
+                  <ImageWithFallback
+                    src={animal.diet.image}
+                    alt={animal.diet.name}
+                    title={animal.diet.name}
+                    className="animal-detail-taxonomy-image d-block mx-auto mb-2"
+                    style={{
+                      backgroundColor: animal.diet.color || fallbackColor,
+                    }}
+                  />
 
-              <h2 className="h5">{animal.diet.name}</h2>
+                  <h2 className="h5">{animal.diet.name}</h2>
 
-              <p className="text-muted mb-0">
-                {animal.diet.description || "Descrizione non disponibile."}
-              </p>
+                  {animal.diet.description && (
+                    <p className="text-muted mb-0">{animal.diet.description}</p>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>
 
         <div className="col-12 col-md-4">
-          <div
-            className="card h-100 shadow-sm animal-detail-info-card"
-            style={{
-              borderColor: animal.conservation_status.color,
-              borderWidth: "3px",
-            }}
-          >
+          <div className="card h-100 shadow-sm animal-detail-info-card">
             <div className="card-header fw-bold">Stato di conservazione</div>
 
             <div className="card-body text-center p-3">
-              <img
-                src={animal.conservation_status.image}
-                alt={animal.conservation_status.name}
-                className="animal-detail-taxonomy-image mb-2"
-              />
+              {animal.conservation_status && (
+                <>
+                  <ImageWithFallback
+                    src={animal.conservation_status.image}
+                    alt={animal.conservation_status.name}
+                    title={animal.conservation_status.name}
+                    className="animal-detail-taxonomy-image d-block mx-auto mb-2"
+                  />
 
-              <h2 className="h5">{animal.conservation_status.name}</h2>
+                  <h2 className="h5">{animal.conservation_status.name}</h2>
 
-              <p className="text-muted mb-0">
-                {animal.conservation_status.description ||
-                  "Descrizione non disponibile."}
-              </p>
+                  {animal.conservation_status.description && (
+                    <p className="text-muted mb-0">
+                      {animal.conservation_status.description}
+                    </p>
+                  )}
+                </>
+              )}
             </div>
           </div>
         </div>
@@ -380,61 +381,56 @@ export default function AnimalDetailPage() {
         <div className="card-header fw-bold">Continenti</div>
 
         <div className="card-body">
-          {animal.continents.length > 0 ? (
-            <div className="row align-items-center g-3">
+          <div className="row align-items-center g-3">
+            {settings?.globe_image && (
               <div className="col-12 col-lg-3 text-center">
-                {settings?.globe_image ? (
-                  <img
-                    src={settings.globe_image}
-                    alt="Globo terrestre"
-                    className="animal-detail-globe-icon img-fluid d-block mx-auto"
-                  />
-                ) : (
-                  <p className="text-muted mb-0">Globo non disponibile.</p>
-                )}
+                <ImageWithFallback
+                  src={settings.globe_image}
+                  alt="Globo terrestre"
+                  title="Globo terrestre"
+                  className="animal-detail-globe-icon img-fluid d-block mx-auto"
+                  fallback={null}
+                />
               </div>
+            )}
 
-              <div className="col-12 col-lg-9">
-                <div className="row g-3 justify-content-center">
-                  {animal.continents.map((continent) => (
-                    <div key={continent.id} className="col-12 col-md-6">
-                      <div
-                        className="card h-100 animal-detail-info-card"
-                        style={{
-                          borderColor: continent.color,
-                          borderWidth: "2px",
-                        }}
-                      >
-                        <div className="card-body p-3 text-center">
-                          <div className="d-flex justify-content-center align-items-center gap-2 mb-2">
-                            <span
-                              className="continent-dot"
-                              style={{
-                                backgroundColor: continent.color,
-                              }}
-                            ></span>
+            <div
+              className={settings?.globe_image ? "col-12 col-lg-9" : "col-12"}
+            >
+              <div className="row g-3 justify-content-center">
+                {(animal.continents ?? []).map((continent) => (
+                  <div key={continent.id} className="col-12 col-md-6">
+                    <div
+                      className="card h-100 animal-detail-info-card"
+                      style={{
+                        borderColor: continent.color || fallbackColor,
+                        borderWidth: "2px",
+                      }}
+                    >
+                      <div className="card-body p-3 text-center">
+                        <div className="d-flex justify-content-center align-items-center gap-2 mb-2">
+                          <span
+                            className="continent-dot"
+                            style={{
+                              backgroundColor: continent.color || fallbackColor,
+                            }}
+                          ></span>
 
-                            <h3 className="h6 fw-bold mb-0">
-                              {continent.name}
-                            </h3>
-                          </div>
-
-                          <p className="text-muted mb-0">
-                            {continent.description ||
-                              "Descrizione non disponibile."}
-                          </p>
+                          <h3 className="h6 fw-bold mb-0">{continent.name}</h3>
                         </div>
+
+                        {continent.description && (
+                          <p className="text-muted mb-0">
+                            {continent.description}
+                          </p>
+                        )}
                       </div>
                     </div>
-                  ))}
-                </div>
+                  </div>
+                ))}
               </div>
             </div>
-          ) : (
-            <p className="text-muted text-center mb-0">
-              Nessun continente associato.
-            </p>
-          )}
+          </div>
         </div>
       </div>
 
@@ -444,48 +440,43 @@ export default function AnimalDetailPage() {
         <div className="card-header fw-bold">Habitat</div>
 
         <div className="card-body">
-          {animal.habitats.length > 0 ? (
-            <div className="row g-3 justify-content-center">
-              {animal.habitats.map((habitat) => (
-                <div key={habitat.id} className="col-12 col-lg-6">
-                  <div
-                    className="card h-100 animal-detail-info-card"
-                    style={{
-                      borderColor: habitat.color,
-                      borderWidth: "2px",
-                    }}
-                  >
-                    <div className="card-body p-2 text-center">
-                      <img
-                        src={habitat.image}
-                        alt={habitat.name}
-                        className="animal-detail-habitat-image img-fluid d-block mx-auto"
-                      />
+          <div className="row g-3 justify-content-center">
+            {(animal.habitats ?? []).map((habitat) => (
+              <div key={habitat.id} className="col-12 col-lg-6">
+                <div
+                  className="card h-100 animal-detail-info-card"
+                  style={{
+                    borderColor: habitat.color || fallbackColor,
+                    borderWidth: "2px",
+                  }}
+                >
+                  <div className="card-body p-2 text-center">
+                    <ImageWithFallback
+                      src={habitat.image}
+                      alt={habitat.name}
+                      title={habitat.name}
+                      className="animal-detail-habitat-image img-fluid d-block mx-auto"
+                    />
 
-                      <h3 className="h5">
-                        <span
-                          className="badge"
-                          style={{
-                            backgroundColor: habitat.color,
-                          }}
-                        >
-                          {habitat.name}
-                        </span>
-                      </h3>
+                    <h3 className="h5">
+                      <span
+                        className="badge"
+                        style={{
+                          backgroundColor: habitat.color || fallbackColor,
+                        }}
+                      >
+                        {habitat.name}
+                      </span>
+                    </h3>
 
-                      <p className="text-muted mb-0">
-                        {habitat.description || "Descrizione non disponibile."}
-                      </p>
-                    </div>
+                    {habitat.description && (
+                      <p className="text-muted mb-0">{habitat.description}</p>
+                    )}
                   </div>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-muted text-center mb-0">
-              Nessun habitat associato.
-            </p>
-          )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -495,48 +486,43 @@ export default function AnimalDetailPage() {
         <div className="card-header fw-bold">Abilità</div>
 
         <div className="card-body">
-          {animal.abilities.length > 0 ? (
-            <div className="row g-3 justify-content-center">
-              {animal.abilities.map((ability) => (
-                <div key={ability.id} className="col-12 col-md-6 col-xl-4">
-                  <div
-                    className="card h-100 animal-detail-info-card"
-                    style={{
-                      borderColor: ability.color,
-                      borderWidth: "2px",
-                    }}
-                  >
-                    <div className="card-body p-2 text-center">
-                      <img
-                        src={ability.image}
-                        alt={ability.name}
-                        className="animal-detail-ability-image img-fluid d-block mx-auto mb-2"
-                      />
+          <div className="row g-3 justify-content-center">
+            {(animal.abilities ?? []).map((ability) => (
+              <div key={ability.id} className="col-12 col-md-6 col-xl-4">
+                <div
+                  className="card h-100 animal-detail-info-card"
+                  style={{
+                    borderColor: ability.color || fallbackColor,
+                    borderWidth: "2px",
+                  }}
+                >
+                  <div className="card-body p-2 text-center">
+                    <ImageWithFallback
+                      src={ability.image}
+                      alt={ability.name}
+                      title={ability.name}
+                      className="animal-detail-ability-image img-fluid d-block mx-auto mb-2"
+                    />
 
-                      <h3 className="h5">
-                        <span
-                          className="badge"
-                          style={{
-                            backgroundColor: ability.color,
-                          }}
-                        >
-                          {ability.name}
-                        </span>
-                      </h3>
+                    <h3 className="h5">
+                      <span
+                        className="badge"
+                        style={{
+                          backgroundColor: ability.color || fallbackColor,
+                        }}
+                      >
+                        {ability.name}
+                      </span>
+                    </h3>
 
-                      <p className="text-muted mb-0">
-                        {ability.description || "Descrizione non disponibile."}
-                      </p>
-                    </div>
+                    {ability.description && (
+                      <p className="text-muted mb-0">{ability.description}</p>
+                    )}
                   </div>
                 </div>
-              ))}
-            </div>
-          ) : (
-            <p className="text-muted text-center mb-0">
-              Nessuna abilità associata.
-            </p>
-          )}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 

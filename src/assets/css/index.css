@@ -63,6 +63,7 @@ body {
 
 .animal-card-details-open {
   max-height: 1000px;
+  overflow-y: auto;
   opacity: 1;
 }
 

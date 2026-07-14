@@ -1,7 +1,22 @@
 import { Link } from "react-router-dom";
 
+import { useSettings } from "../contexts/SettingsContext";
+import ImageWithFallback from "./ImageWithFallback";
+
 export default function AnimalCard({ animal, expandedCards, showRealImages }) {
+  const { fallbackColor } = useSettings();
+
   const dexNumber = String(animal.id).padStart(4, "0");
+
+  const animalClass = animal.animal_class;
+  const diet = animal.diet;
+  const conservationStatus = animal.conservation_status;
+
+  const habitats = animal.habitats ?? [];
+  const continents = animal.continents ?? [];
+  const abilities = animal.abilities ?? [];
+
+  const classColor = animalClass?.color ?? fallbackColor;
 
   return (
     <Link
@@ -11,7 +26,7 @@ export default function AnimalCard({ animal, expandedCards, showRealImages }) {
       <div
         className="card animal-card h-100 shadow-sm"
         style={{
-          borderColor: animal.animal_class.color,
+          borderColor: classColor,
           borderWidth: "4px",
         }}
       >
@@ -19,49 +34,61 @@ export default function AnimalCard({ animal, expandedCards, showRealImages }) {
           <div className="d-flex justify-content-between align-items-center mb-1">
             <span className="text-secondary text-opacity-75">#{dexNumber}</span>
 
-            <span
-              className="badge text-light"
-              style={{ backgroundColor: animal.animal_class.color }}
-            >
-              {animal.animal_class.name}
-            </span>
+            {animalClass && (
+              <span
+                className="badge text-light"
+                style={{ backgroundColor: classColor }}
+              >
+                {animalClass.name}
+              </span>
+            )}
           </div>
 
           <div className="animal-card-image bg-light mb-3 flex-shrink-0">
-            <img
+            <ImageWithFallback
               src={animal.card_image}
               alt={`${animal.name} in versione fantasy`}
+              title={`Immagine: ${animal.name}`}
               className={`animal-card-image-content ${
                 showRealImages ? "" : "active"
               }`}
+              iconClassName="fs-1 opacity-50"
             />
 
-            <img
+            <ImageWithFallback
               src={animal.real_image}
               alt={`${animal.name} nella realtà`}
+              title={`Immagine: ${animal.name}`}
               className={`animal-card-image-content ${
                 showRealImages ? "active" : ""
               }`}
+              iconClassName="fs-1 opacity-50"
             />
           </div>
 
           <div className="animal-card-heading d-flex align-items-center gap-3 mb-3">
-            <img
-              src={animal.animal_class.image}
-              alt={animal.animal_class.name}
-              title={`Classe: ${animal.animal_class.name}`}
-              width="52"
-              height="52"
-              style={{ backgroundColor: animal.animal_class.color }}
-              className="rounded-circle flex-shrink-0"
-            />
+            {animalClass && (
+              <ImageWithFallback
+                src={animalClass.image}
+                alt={animalClass.name}
+                title={`Classe: ${animalClass.name}`}
+                width={52}
+                height={52}
+                className="rounded-circle flex-shrink-0"
+                style={{
+                  backgroundColor: classColor,
+                }}
+              />
+            )}
 
             <div>
               <h2 className="h4 mb-0">{animal.name}</h2>
 
-              <p className="fst-italic text-muted mb-0">
-                {animal.scientific_name}
-              </p>
+              {animal.scientific_name && (
+                <p className="fst-italic text-muted mb-0">
+                  {animal.scientific_name}
+                </p>
+              )}
             </div>
           </div>
 
@@ -82,7 +109,8 @@ export default function AnimalCard({ animal, expandedCards, showRealImages }) {
                       <small className="text-muted d-block">Peso</small>
 
                       <strong>
-                        {animal.weight_kg !== null
+                        {animal.weight_kg !== null &&
+                        animal.weight_kg !== undefined
                           ? `${Number(animal.weight_kg)} kg`
                           : "-"}
                       </strong>
@@ -94,7 +122,8 @@ export default function AnimalCard({ animal, expandedCards, showRealImages }) {
                       <small className="text-muted d-block">Lunghezza</small>
 
                       <strong>
-                        {animal.length_cm !== null
+                        {animal.length_cm !== null &&
+                        animal.length_cm !== undefined
                           ? `${Number(animal.length_cm)} cm`
                           : "-"}
                       </strong>
@@ -106,7 +135,8 @@ export default function AnimalCard({ animal, expandedCards, showRealImages }) {
                       <small className="text-muted d-block">Altezza</small>
 
                       <strong>
-                        {animal.height_cm !== null
+                        {animal.height_cm !== null &&
+                        animal.height_cm !== undefined
                           ? `${Number(animal.height_cm)} cm`
                           : "-"}
                       </strong>
@@ -118,7 +148,8 @@ export default function AnimalCard({ animal, expandedCards, showRealImages }) {
                       <small className="text-muted d-block">Longevità</small>
 
                       <strong>
-                        {animal.lifespan_years !== null
+                        {animal.lifespan_years !== null &&
+                        animal.lifespan_years !== undefined
                           ? `${animal.lifespan_years} anni`
                           : "-"}
                       </strong>
@@ -133,24 +164,30 @@ export default function AnimalCard({ animal, expandedCards, showRealImages }) {
                 </p>
 
                 <div className="d-flex justify-content-center align-items-center gap-3">
-                  <img
-                    src={animal.diet.image}
-                    alt={animal.diet.name}
-                    title={`Dieta: ${animal.diet.name}`}
-                    width="40"
-                    height="40"
-                    style={{ backgroundColor: animal.diet.color }}
-                    className="img-fluid flex-shrink-0"
-                  />
+                  {diet && (
+                    <ImageWithFallback
+                      src={diet.image}
+                      alt={diet.name}
+                      title={`Dieta: ${diet.name}`}
+                      width={40}
+                      height={40}
+                      className="img-fluid flex-shrink-0"
+                      style={{
+                        backgroundColor: diet.color || fallbackColor,
+                      }}
+                    />
+                  )}
 
-                  <img
-                    src={animal.conservation_status.image}
-                    alt={animal.conservation_status.name}
-                    title={`Stato di conservazione: ${animal.conservation_status.name}`}
-                    width="40"
-                    height="40"
-                    className="img-fluid"
-                  />
+                  {conservationStatus && (
+                    <ImageWithFallback
+                      src={conservationStatus.image}
+                      alt={conservationStatus.name}
+                      title={`Stato di conservazione: ${conservationStatus.name}`}
+                      width={40}
+                      height={40}
+                      className="img-fluid flex-shrink-0"
+                    />
+                  )}
                 </div>
               </div>
 
@@ -161,27 +198,29 @@ export default function AnimalCard({ animal, expandedCards, showRealImages }) {
 
                 <div className="d-flex flex-column align-items-center gap-2">
                   <div className="d-flex flex-wrap justify-content-center gap-2">
-                    {animal.habitats.map((habitat) => (
-                      <img
+                    {habitats.map((habitat) => (
+                      <ImageWithFallback
                         key={habitat.id}
                         src={habitat.image}
                         alt={habitat.name}
                         title={`Habitat: ${habitat.name}`}
-                        width="64"
-                        height="64"
-                        className="img-fluid"
+                        width={64}
+                        height={64}
+                        className="img-fluid flex-shrink-0"
                       />
                     ))}
                   </div>
 
                   <div className="d-flex flex-wrap justify-content-center gap-1">
-                    {animal.continents.map((continent) => (
+                    {continents.map((continent) => (
                       <span
                         key={continent.id}
                         className="continent-dot"
-                        style={{ backgroundColor: continent.color }}
+                        style={{
+                          backgroundColor: continent.color ?? fallbackColor,
+                        }}
                         title={`Continente: ${continent.name}`}
-                      ></span>
+                      />
                     ))}
                   </div>
                 </div>
@@ -193,15 +232,15 @@ export default function AnimalCard({ animal, expandedCards, showRealImages }) {
                 </p>
 
                 <div className="d-flex flex-wrap justify-content-center align-items-center gap-2">
-                  {animal.abilities.map((ability) => (
-                    <img
+                  {abilities.map((ability) => (
+                    <ImageWithFallback
                       key={ability.id}
                       src={ability.image}
                       alt={ability.name}
                       title={`Abilità: ${ability.name}`}
-                      width="64"
-                      height="64"
-                      className="img-fluid"
+                      width={64}
+                      height={64}
+                      className="img-fluid flex-shrink-0"
                     />
                   ))}
                 </div>

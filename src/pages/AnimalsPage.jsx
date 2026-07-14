@@ -17,6 +17,9 @@ import { MdOutlinePhotoCamera } from "react-icons/md";
 
 import AnimalCard from "../components/AnimalCard";
 
+import ImageWithFallback from "../components/ImageWithFallback";
+import { useSettings } from "../contexts/SettingsContext";
+
 const apiUrl = import.meta.env.VITE_API_URL;
 
 const initialFilters = {
@@ -52,6 +55,8 @@ const initialFilters = {
 };
 
 export default function AnimalsPage() {
+  const { fallbackColor, appName } = useSettings();
+
   const [animals, setAnimals] = useState([]);
   const [pagination, setPagination] = useState(null);
   const [taxonomies, setTaxonomies] = useState(null);
@@ -415,12 +420,14 @@ export default function AnimalsPage() {
                     >
                       {selectedAnimalClass ? (
                         <span className="d-flex align-items-center gap-2">
-                          <img
+                          <ImageWithFallback
                             src={selectedAnimalClass.image}
-                            alt=""
+                            alt={selectedAnimalClass.name}
+                            title={selectedAnimalClass.name}
                             className="basic-filter-icon rounded-circle"
                             style={{
-                              backgroundColor: selectedAnimalClass.color,
+                              backgroundColor:
+                                selectedAnimalClass.color || fallbackColor,
                             }}
                           />
 
@@ -465,12 +472,14 @@ export default function AnimalsPage() {
                               )
                             }
                           >
-                            <img
+                            <ImageWithFallback
                               src={animalClass.image}
-                              alt=""
+                              alt={animalClass.name}
+                              title={animalClass.name}
                               className="basic-filter-icon rounded-circle"
                               style={{
-                                backgroundColor: animalClass.color,
+                                backgroundColor:
+                                  animalClass.color || fallbackColor,
                               }}
                             />
 
@@ -497,12 +506,14 @@ export default function AnimalsPage() {
                     >
                       {selectedDiet ? (
                         <span className="d-flex align-items-center gap-2">
-                          <img
+                          <ImageWithFallback
                             src={selectedDiet.image}
-                            alt=""
+                            alt={selectedDiet.name}
+                            title={selectedDiet.name}
                             className="basic-filter-icon"
                             style={{
-                              backgroundColor: selectedDiet.color,
+                              backgroundColor:
+                                selectedDiet.color || fallbackColor,
                             }}
                           />
 
@@ -541,12 +552,13 @@ export default function AnimalsPage() {
                               setSingleFilter(event, "diet", diet.slug)
                             }
                           >
-                            <img
+                            <ImageWithFallback
                               src={diet.image}
-                              alt=""
+                              alt={diet.name}
+                              title={diet.name}
                               className="basic-filter-icon"
                               style={{
-                                backgroundColor: diet.color,
+                                backgroundColor: diet.color || fallbackColor,
                               }}
                             />
 
@@ -575,9 +587,10 @@ export default function AnimalsPage() {
                     >
                       {selectedConservationStatus ? (
                         <span className="d-flex align-items-center gap-2">
-                          <img
+                          <ImageWithFallback
                             src={selectedConservationStatus.image}
-                            alt=""
+                            alt={selectedConservationStatus.name}
+                            title={selectedConservationStatus.name}
                             className="basic-filter-icon"
                           />
 
@@ -622,9 +635,10 @@ export default function AnimalsPage() {
                               )
                             }
                           >
-                            <img
+                            <ImageWithFallback
                               src={status.image}
-                              alt=""
+                              alt={status.name}
+                              title={status.name}
                               className="basic-filter-icon"
                             />
 
@@ -651,7 +665,7 @@ export default function AnimalsPage() {
                     onChange={handleFilterChange}
                   >
                     <option value="">Ordinamento predefinito</option>
-                    <option value="id">Numero ZooDex</option>
+                    <option value="id">Numero {appName}</option>
                     <option value="name">Nome</option>
                     <option value="scientific_name">Nome scientifico</option>
                     <option value="weight_kg">Peso</option>
@@ -1024,9 +1038,10 @@ export default function AnimalsPage() {
                           }
                         />
 
-                        <img
+                        <ImageWithFallback
                           src={habitat.image}
                           alt={habitat.name}
+                          title={habitat.name}
                           className="filter-icon filter-icon-lg"
                         />
 
@@ -1079,7 +1094,7 @@ export default function AnimalsPage() {
                         <span
                           className="continent-dot"
                           style={{
-                            backgroundColor: continent.color,
+                            backgroundColor: continent.color || fallbackColor,
                           }}
                         ></span>
 
@@ -1127,9 +1142,10 @@ export default function AnimalsPage() {
                           }
                         />
 
-                        <img
+                        <ImageWithFallback
                           src={ability.image}
                           alt={ability.name}
+                          title={ability.name}
                           className="filter-icon filter-icon-lg"
                         />
 

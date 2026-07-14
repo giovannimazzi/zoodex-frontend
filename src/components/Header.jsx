@@ -1,25 +1,39 @@
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
+
 import { useSettings } from "../contexts/SettingsContext";
+import ImageWithFallback from "./ImageWithFallback";
 
 export default function Header() {
-  const { settings } = useSettings();
+  const { settings, settingsError, appName } = useSettings();
 
   return (
     <header>
       <nav className="navbar navbar-expand-md navbar-light bg-light shadow-sm fixed-top">
         <div className="container">
           <NavLink className="navbar-brand d-flex align-items-center" to="/">
-            {settings ? (
-              <img
-                src={settings.navbar_logo}
-                alt={settings.app_name}
-                style={{ height: "80px", marginTop: "-20px" }}
+            {settings || settingsError ? (
+              <ImageWithFallback
+                src={settings?.navbar_logo}
+                alt={appName}
+                title={appName}
+                style={{
+                  height: "80px",
+                  marginTop: "-20px",
+                }}
+                fallback={
+                  <span className="fw-bold text-danger">
+                    <big>🦜</big>
+                    {appName}
+                  </span>
+                }
               />
             ) : (
-              <div
-                className="spinner-border spinner-border-sm"
-                role="status"
-              ></div>
+              <div className="spinner-border spinner-border-sm" role="status">
+                <span className="visually-hidden">
+                  Caricamento applicazione...
+                </span>
+              </div>
             )}
           </NavLink>
 
