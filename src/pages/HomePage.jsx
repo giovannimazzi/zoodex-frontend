@@ -47,7 +47,7 @@ export default function HomePage() {
 
       <p className="h2 fw-bold mb-3 text-success">Conoscili Tutti</p>
 
-      <p className="lead fw-medium mx-auto mb-4 w-75">
+      <p className="lead mx-auto mb-4 w-75">
         <strong>{appName}</strong> è un archivio digitale dedicato alla scoperta
         di animali reali reinterpretati in chiave <strong>fantasy</strong>.
         <br />
