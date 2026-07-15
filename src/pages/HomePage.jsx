@@ -8,10 +8,6 @@ import { useEffect } from "react";
 export default function HomePage() {
   const { settings, settingsError, appName } = useSettings();
 
-  useEffect(() => {
-    sessionStorage.removeItem("animalsFilters");
-  }, []);
-
   if (settingsError) {
     return (
       <div className="container py-4">
