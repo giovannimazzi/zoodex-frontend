@@ -61,7 +61,22 @@ export default function AnimalsPage() {
   const [pagination, setPagination] = useState(null);
   const [taxonomies, setTaxonomies] = useState(null);
 
-  const [filters, setFilters] = useState(initialFilters);
+  const [filters, setFilters] = useState(() => {
+    const savedFilters = sessionStorage.getItem("animalsFilters");
+
+    if (!savedFilters) {
+      return initialFilters;
+    }
+
+    try {
+      return JSON.parse(savedFilters);
+    } catch (error) {
+      console.error(error);
+      sessionStorage.removeItem("animalsFilters");
+
+      return initialFilters;
+    }
+  });
   const [page, setPage] = useState(1);
 
   const [loading, setLoading] = useState(true);
@@ -195,6 +210,10 @@ export default function AnimalsPage() {
         setLoading(false);
       });
   }, [filters, page]);
+
+  useEffect(() => {
+    sessionStorage.setItem("animalsFilters", JSON.stringify(filters));
+  }, [filters]);
 
   function handleFilterChange(event) {
     const { name, value } = event.target;

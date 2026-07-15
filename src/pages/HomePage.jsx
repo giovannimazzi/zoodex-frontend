@@ -3,9 +3,14 @@ import { FcBinoculars } from "react-icons/fc";
 
 import ImageWithFallback from "../components/ImageWithFallback";
 import { useSettings } from "../contexts/SettingsContext";
+import { useEffect } from "react";
 
 export default function HomePage() {
   const { settings, settingsError, appName } = useSettings();
+
+  useEffect(() => {
+    sessionStorage.removeItem("animalsFilters");
+  }, []);
 
   if (settingsError) {
     return (
